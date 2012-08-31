@@ -6,7 +6,9 @@ from PyQt4 import QtGui,QtCore
 from lib.GNegar import *
 from lib.Virastar import PersianEditor
 from lib.VirAbout import *
+import enchant
 #from GNegar import GlobalValues
+
 
 class GlobalValues(object):
         global text

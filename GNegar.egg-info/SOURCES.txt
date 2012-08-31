@@ -1,0 +1,12 @@
+README.txt
+setup.py
+GNegar.egg-info/PKG-INFO
+GNegar.egg-info/SOURCES.txt
+GNegar.egg-info/dependency_links.txt
+GNegar.egg-info/top_level.txt
+bin/GNegar_Main.py
+lib/GNegar.py
+lib/GNrc.py
+lib/VirAbout.py
+lib/Virastar.py
+lib/__init__.py

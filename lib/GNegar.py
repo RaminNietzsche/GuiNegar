@@ -7,14 +7,41 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
-import GNrc
+#--------------------------Form Maker----------------------------
+from PyQt4 import QtCore, QtGui                                 #
+import GNrc                                                     #
+#------------------------Suggest Menu----------------------------
+from PyQt4.Qt import QTextCursor                                #
+import enchant                                                  #
+from PyQt4.Qt import QMenu                                      #
+from PyQt4.Qt import QCursor                                    #
+from PyQt4.Qt import QPoint                                     #
+from PyQt4.Qt import QAction                                    #
+from PyQt4.QtCore import pyqtSignal                             #
+from PyQt4.Qt import QSyntaxHighlighter                         #
+from PyQt4.Qt import QTextCharFormat                            #
+import re                                                       #
+import sys                                                      #
+from PyQt4.Qt import QApplication                               #
+from PyQt4.Qt import QEvent                                     #
+from PyQt4.Qt import QMouseEvent                                #
+#from PyQt4.Qt import QPlainTextEdit                            #
+from PyQt4.Qt import Qt                                         #
+#----------------------------------------------------------------
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
-
+#--------------------------------------------------------
+#         ___  _     _____ ___  ____  __  __            #
+#        / _ \| |_  |  ___/ _ \|  _ \|  \/  |           #
+#       | | | | __| | |_ | | | | |_) | |\/| |           #
+#       | |_| | |_  |  _|| |_| |  _ <| |  | |           #
+#        \__\_\\__| |_|   \___/|_| \_\_|  |_|           #
+#                                                       #
+#         open GNegar.ui by designer-qt4 ;)             #
+#--------------------------------------------------------
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
@@ -36,6 +63,7 @@ class Ui_MainWindow(object):
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.Persian, QtCore.QLocale.Iran))
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
         MainWindow.setDocumentMode(True)
+        self.dict = enchant.DictWithPWL("fa_IR","fa.dic")#enchant.Dict() -----------------------> Dictionary For Suggestion!!!
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.MainFrame = QtGui.QFrame(self.centralwidget)
@@ -73,6 +101,11 @@ class Ui_MainWindow(object):
         self.TextFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.TextFrame.setObjectName(_fromUtf8("TextFrame"))
         self.textEdit = QtGui.QTextEdit(self.TextFrame)
+        self.textEdit.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.textEdit.customContextMenuRequested.connect(self.contextMenuEvent)
+        self.textEdit.highlighter = Highlighter(self.textEdit)
+        self.textEdit.highlighter.setDict(self.dict)
+        #self.textEdit.mousePressEvent.connect(self.mousePressEvent)
         self.textEdit.setGeometry(QtCore.QRect(10, 10, 741, 251))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Nazli"))
@@ -578,3 +611,115 @@ class Ui_MainWindow(object):
         self.AboutPush.setStatusTip(QtGui.QApplication.translate("MainWindow", "درباره‌ی من و نگار!", None, QtGui.QApplication.UnicodeUTF8))
 
 
+#----------------------------------------------------------------
+#        ____                __  __ _____ _   _ _   _           #
+#       / ___| _   _  __ _  |  \/  | ____| \ | | | | |          #
+#       \___ \| | | |/ _` | | |\/| |  _| |  \| | | | |          #
+#        ___) | |_| | (_| | | |  | | |___| |\  | |_| |          #
+#       |____/ \__,_|\__, | |_|  |_|_____|_| \_|\___/           #
+#                    |___/                                      #
+#                                                               #
+#          Make Suggestion menu for wrong words ;)              #
+#----------------------------------------------------------------
+
+    def contextMenuEvent(self, event):#pos):
+        popup_menu = self.textEdit.createStandardContextMenu()#pos)
+ 
+        # Select the word under the cursor.
+        cursor = self.textEdit.textCursor()
+        cursor.select(QTextCursor.WordUnderCursor)
+        self.textEdit.setTextCursor(cursor)
+ 
+        # Check if the selected word is misspelled and offer spelling
+        # suggestions if it is.
+        if self.textEdit.textCursor().hasSelection():
+            text = unicode(self.textEdit.textCursor().selectedText())
+            if not self.dict.check(text):
+                #print "o0mad to0 dict :D"
+                spell_menu = QMenu('Spelling Suggestions')
+                #print spell_menu
+                for word in self.dict.suggest(text):
+                    action = SpellAction(word, spell_menu)
+                    action.correct.connect(self.correctWord)
+                    spell_menu.addAction(action)
+                    #print word
+                # Only add the spelling suggests to the menu if there are
+                # suggestions.
+                print len(spell_menu.actions())
+                #print spell_menu.actions()
+                if len(spell_menu.actions()) != 0:
+                    popup_menu.insertSeparator(popup_menu.actions()[0])
+                    popup_menu.insertMenu(popup_menu.actions()[0], spell_menu)
+ 
+        popup_menu.exec_(QCursor.pos())#self.textEdit.mapToGlobal(QPoint(0, 0)))#.globalPos())
+        #popup_menu.popup(pos)
+ 
+        
+        
+    def proposalSelected(self, selectedWord):
+        fixed = do(selectedWord)
+        self.textEdit.textCursor().insertText(fixed)
+        
+    def mousePressEvent(self, event):
+        if event.button() == Qt.RightButton:
+            # Rewrite the mouse event to a left button event so the cursor is
+            # moved to the location of the pointer.
+            event = QMouseEvent(QEvent.MouseButtonPress, event.pos(),
+                Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+        QTextEdit.mousePressEvent(self, event)        
+        
+    def correctWord(self, word):
+        '''
+        Replaces the selected text with word.
+        '''
+        cursor = self.textEdit.textCursor()
+        cursor.beginEditBlock()
+ 
+        cursor.removeSelectedText()
+        cursor.insertText(word)
+ 
+        cursor.endEditBlock()
+ 
+ 
+class Highlighter(QSyntaxHighlighter):
+ 
+    WORDS = u'(?iu)[\w\']+'
+ 
+    def __init__(self, *args):
+        QSyntaxHighlighter.__init__(self, *args)
+ 
+        self.dict = None
+ 
+    def setDict(self, dict):
+        self.dict = dict
+ 
+    def highlightBlock(self, text):
+        if not self.dict:
+            return
+ 
+        text = unicode(text)
+ 
+        format = QTextCharFormat()
+        format.setUnderlineColor(Qt.red)
+        format.setUnderlineStyle(QTextCharFormat.SpellCheckUnderline)
+ 
+        for word_object in re.finditer(self.WORDS, text):
+            if not self.dict.check(word_object.group()):
+                self.setFormat(word_object.start(),
+                    word_object.end() - word_object.start(), format)
+         
+        
+class SpellAction(QAction):
+ 
+    '''
+    A special QAction that returns the text in a signal.
+    '''
+ 
+    correct = pyqtSignal(unicode)
+ 
+    def __init__(self, *args):
+        QAction.__init__(self, *args)
+ 
+        self.triggered.connect(lambda x: self.correct.emit(
+            unicode(self.text())))
+ 

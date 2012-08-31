@@ -5,7 +5,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 setup(
     name = "GNegar",
-    version = "0.0",
+    version = "0.1",
     author = "Ramin Najjarbashi",
     author_email = "Ramin.Najarbashi@gmail.com",
     packages = find_packages() + ['lib'],
@@ -13,7 +13,7 @@ setup(
     description = "Negar is a spell corrector and Persian text editor",
     license = "GPL",
     keywords = "spellcheck Persian editor",
-    url = "http://RaminNietzsche.github.com/Negar",
+    url = "http://raminnietzsche.github.com/GuiNegar/",
     long_description=read
     ('README.txt'),    
 )
