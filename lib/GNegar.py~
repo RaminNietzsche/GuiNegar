@@ -636,7 +636,7 @@ class Ui_MainWindow(object):
             text = unicode(self.textEdit.textCursor().selectedText())
             if not self.dict.check(text):
                 #print "o0mad to0 dict :D"
-                spell_menu = QMenu(u'شاید منظورتان این بوده:')
+                spell_menu = QMenu('شاید منظورتان این بوده:')
                 #print spell_menu
                 for word in self.dict.suggest(text):
                     action = SpellAction(word, spell_menu)
