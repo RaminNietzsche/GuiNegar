@@ -13,4 +13,6 @@ Homepage: http://raminnietzsche.github.com/GuiNegar/
 XB-Python-Version: ${python:Versions}
 Pre-Depends:  python-setuptools (>= 0.6.24), myspell-fa, python-qt4 (>= 4.9.1), python-enchant (>= 1.6.5)
 #${shlibs:Depends}, ${misc:Depends}
-Description: This Scrip help you to write correct persian text ;) این برانه به شما کمک می کند تا به راحتی متون خود را ویرایش کنید و استباهات املایی آن را حدس می زند! 
+Description: GNegar --- This script help you to make correct persian text ;)
+ .
+        این برنامه به شما کمک می‌کند تا به سادگی متون خود را ویرایش کنید‌. اشتباهات خود را تصحیح کنید‌، اعداد را فارسی بنویسید و اشتباهات نگارشی رایج را بدون دردسر تصحیح کنید‌. 
