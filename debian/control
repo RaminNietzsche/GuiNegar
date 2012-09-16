@@ -2,15 +2,15 @@ Source: gnegar
 Section: python
 Priority: required
 Maintainer: Ramin Najjarbashi (ramin.najarbashi@gmail.com)
-Build-Depends: python-setuptools (>= 0.6.24), myspell-fa (>= 0.20070816-3), python-qt4 (>= 4.9.1), python-enchant (>= 1.6.5)
-XS-Python-Version: >=2.7
-Standards-Version: 3.9.3.1
+DM-Upload-Allowed: yes
+Build-Depends: python-setuptools (>= 0.6.24), myspell-fa, python-qt4 (>= 4.9.1), python-enchant (>= 1.6.5)
+X-Python-Version: >=2.5, <=2.7
+Standards-Version: 3.9.3
 
 Package: gnegar
-Architecture: all
+Architecture: all 
 Homepage: http://raminnietzsche.github.com/GuiNegar/
 XB-Python-Version: ${python:Versions}
-Depends: ${misc:Depends}, ${python:Depends}
-Description: This Scrip help you to write correct persian text ;) ha ha ha :D yani in ke kolan dorost mikone chizaiee ke minvisin, ham emlaiee, ham negareshi :D ino bebinin :
-
-http://raminnietzsche.github.com/GuiNegar/
+Pre-Depends:  python-setuptools (>= 0.6.24), myspell-fa, python-qt4 (>= 4.9.1), python-enchant (>= 1.6.5)
+#${shlibs:Depends}, ${misc:Depends}
+Description: This Scrip help you to write correct persian text ;) این برانه به شما کمک می کند تا به راحتی متون خود را ویرایش کنید و استباهات املایی آن را حدس می زند! 

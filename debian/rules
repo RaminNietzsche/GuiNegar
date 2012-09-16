@@ -1,6 +1,11 @@
 #!/usr/bin/make -f
+# -*- makefile -*-
+
+DEB_PYTHON_SYSTEM := pysupport
 
 include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
 
-DEB_CONFIGURE_EXTRA_FLAGS := --enable-shared
+clean::
+	rm -rf build build-stamp configure-stamp build/ MANIFEST
+	dh_clean
