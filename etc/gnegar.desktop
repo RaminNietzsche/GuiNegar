@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=0.1.1
+Terminal=false
+Icon=gnegar
+Type=Application
+Categories=Office;
+Exec=/usr/bin/gnegar
+Name=GNegar
+GenericName=GNegar
+GenericName[en]=GNegar
+GenericName[fa]=ویرایشگر نگار
+Comment=Persian Text Editor (Check spell and etc ;) )
+Comment[en]=Persian Text Editor (Check spell and etc ;) )
+Comment[fa]=ویرایگشر متون فارسی برای تصحیح خطاهای رایج نگارشی به همراه غلط یاب املایی

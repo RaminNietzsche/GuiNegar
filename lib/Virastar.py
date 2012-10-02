@@ -161,10 +161,10 @@ class PersianEditor():
 
         there's a possible bug here: می and نمی could separate nouns and not prefix
         """
-        self.text = re.sub(ur"\s*(ن?می)\s*",ur'\1‌', self.text)
+        self.text = re.sub(ur"\s*(ن?می)\s+",ur' \1‌', self.text)
 
     def fix_suffix_spacing_func(self):
-        self.text = re.sub(ur'\s*(تر(ی(ن)?)?|ها(ی)?)\s*', ur'‌\1 ', self.text)
+        self.text = re.sub(ur'\s+(تر(ی(ن)?)?|ها(ی)?)\s*', ur'‌\1 ', self.text)
 
     def aggresive_func(self):
         """

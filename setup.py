@@ -17,7 +17,9 @@ if __name__ == '__main__':
         url = "http://RaminNietzsche.github.com/GuiNegar",
  	keywords=['spellcheck','Persian','editor','python'],
  	data_files = [('share/doc/gnegar',['README', 'COPYING', 'CHANGES']),
-                 	('share/man/man1/', ['man/gnegar.1']) ],
+                 	('share/man/man1/', ['man/gnegar.1']),
+			('share/applications/',['etc/gnegar.desktop']),
+			('share/icons/',['etc/gnegar.png']) ],
  	classifiers=[
  	'Development Status :: 0 - Beta',
  	'Intended Audience :: Persian Users',
